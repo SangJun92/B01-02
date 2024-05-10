@@ -133,12 +133,13 @@
 
         // 삭제 대상 파일들의 삭제
         callRemoveFiles()
+
         formObj.method = 'post'
         formObj.submit()
     }, false)
 
     function appendFileData() {
-        const taget = document.querySelector(".uploadHidden")
+        const target = document.querySelector(".uploadHidden")
         const uploadFiles = uploadResult.querySelectorAll("img")
 
         let str = ''
@@ -147,7 +148,7 @@
             const uploadFile = uploadFiles[i]
             const imgLink = uploadFile.getAttribute("data-src")
 
-            str += `<input type="hiddem" name="fileNames" value="${imgLink}">`
+            str += `<input type="hidden" name="fileNames" value="${imgLink}">`
         }
         target.innerHTML = str;
     }
