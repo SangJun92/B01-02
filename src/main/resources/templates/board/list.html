@@ -22,6 +22,7 @@
                         <div class="input-group-append">
                             <button class="btn btn-outline-secondary searchBtn" type="submit">Search</button>
                             <button class="btn btn-outline-secondary clearBtn" type="button">Clear</button>
+                            <a href="/board/register" class="btn btn-outline-secondary" >Register</a>
                         </div>
                     </div>
                 </div>
@@ -53,6 +54,10 @@
                                     <span class="badge progress-bar-success" style="background-color: #FF0000">
                                         [[${dto.replyCount}]]
                                     </span>
+                                    <div th:if="${dto.boardImages != null && dto.boardImages.size() > 0}">
+                                        <img style="width:100px" th:each="boardImage : ${dto.boardImages}"
+                                             th:src="|/view/s_${boardImage.uuid}_${boardImage.fileName}|">
+                                    </div>
                                 </td>
                                 <td>[[${dto.writer}]]</td>
                                 <td>[[${#temporals.format(dto.regDate, 'yyyy-MM-dd')}]]</td>
