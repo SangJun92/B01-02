@@ -134,6 +134,8 @@
 </div>
 
 <script layout:fragment="script" th:inline="javascript">
+    const currentUser = [[${#authentication.principal.username}]]
+
     const errors = [[${errors}]]
     console.log(errors)
     let errorMsg = ''
@@ -227,7 +229,6 @@
     const removeBtn = document.querySelector(".removeBtn")
     const closeModifyBtn = document.querySelector(".closeModifyBtn")
 
-    const currentUser = [[${#authentication.principal.username}]]
     let hasAuth = false // 댓글의 작성자와 currentUser의 일치 여부
 
     // 댓글 목록위의 ADD REPLY버튼 : 모달창 출력 버튼
@@ -315,6 +316,12 @@
     // 댓글 수정 버튼 이벤트
     modifyBtn.addEventListener("click", function (e) {
 
+        if(!hasAuth) {
+            alert("댓글 작성자만 수정이 가능합니다.")
+            modifyModel.hide()
+            return
+        }
+
         // 서버에 보낼 데이터를 설정
         const replyObj = {
             bno: bno, // 게시글 번호
@@ -335,6 +342,12 @@
     }, false)
 
     removeBtn.addEventListener("click", function (e) {
+
+        if(!hasAuth) {
+            alert("댓글 작성자만 삭제가 가능합니다.")
+            modifyModel.hide()
+            return
+        }
 
         removeReply(replyHeader.innerHTML).then(result => {
             alert(result.rno + ' 댓글이 삭제되었습니다.')
