@@ -312,14 +312,6 @@
         }).catch(e => alert('error'))
     }, false)
 
-        getReply(rno).then(reply => { // 댓글의 내용을 모달창에 채워서 보내주는
-            console.log(reply)
-            replyHeader.innerHTML = reply.rno
-            modifyText.value = reply.replyText
-            modifyModel.show()
-        })
-    }, false)
-
     // 댓글 수정 버튼 이벤트
     modifyBtn.addEventListener("click", function (e) {
 
