@@ -1,7 +1,8 @@
 <!DOCTYPE html>
 <html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       xmlns:th="http://www.thymeleaf.org"
-        layout:decorate="~{/layout/basic.html}">
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity6"
+      layout:decorate="~{/layout/basic.html}">
 <head>
     <title>Board Register</title>
 </head>
@@ -24,7 +25,9 @@
                         </div>
                         <div class="input-group mb-3">
                             <span class="input-group-text">Writer</span>
-                            <input type="text" name="writer" class="form-control" placeholder="Writer">
+                            <input type="text" name="writer" class="form-control" placeholder="Writer"
+                                   th:value="${#authentication.principal.username}" readonly>
+
                         </div>
                         <div class="input-group mb-3">
                             <span class="input-group-text">Image</span>
@@ -43,31 +46,31 @@
             </div>
         </div>
     </div>
-<!--    첨부파일 썸네일을 보여줄 부분-->
+    <!--    첨부파일 썸네일을 보여줄 부분-->
     <div class="row mt-3">
         <div class="col">
             <div class="container-fluid d-flex uploadResult" style="flex-wrap: wrap;"></div>
         </div>
     </div>
-<!--    첨부파일 추가를 위한 모달창-->
+    <!--    첨부파일 추가를 위한 모달창-->
     <div class="modal uploadModal" tabindex="-1">
         <div class="modal-dialog">
             <div class="modal-content">
-<!--                모달창 제목 설정 부분-->
+                <!--                모달창 제목 설정 부분-->
                 <div class="modal-header">
-<!--                    제목-->
+                    <!--                    제목-->
                     <h5 class="modal-title">Upload</h5>
-<!--                    X버튼-->
+                    <!--                    X버튼-->
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
 
-    <!--            첨부파일 추가 버튼 내용부분-->
+                <!--            첨부파일 추가 버튼 내용부분-->
                 <div class="modal-body">
                     <div class="input-group mb-3">
                         <input type="file" name="files" class="form-control" multiple>
                     </div>
                 </div>
-    <!--            footer 버튼 출력부-->
+                <!--            footer 버튼 출력부-->
                 <div class="modal-footer">
                     <button type="button" class="btn btn-primary uploadBtn">Upload</button>
                     <button type="button" class="btn btn-outline-dark closeUploadBtn">Close</button>
@@ -79,12 +82,14 @@
     <script src="/js/upload.js"></script>
 </div>
 <script layout:fragment="script" th:inline="javascript">
+    const auth = [[${#authentication}]]
+
     const uploadResult = document.querySelector(".uploadResult")
     const errors = [[${errors}]]
     console.log(errors)
     let errorMsg = ''
-    if(errors){
-        for(let i=0; i<errors.length; i++){
+    if (errors) {
+        for (let i = 0; i < errors.length; i++) {
             errorMsg += `${errors[i].field}은(는) ${errors[i].code} \n`
         }
         alert(errorMsg)
@@ -149,6 +154,7 @@
             targetDiv.remove()
         })
     }
+
     document.querySelector(".submitBtn").addEventListener("click", function (e) {
         e.preventDefault()
         e.stopPropagation()
@@ -162,7 +168,7 @@
         let str = ''
 
         // 이미지 태그 개수만큼 반복하는 반복문
-        for(let i = 0; i < uploadFiles.length; i++) {
+        for (let i = 0; i < uploadFiles.length; i++) {
             // 이미지 태그를 하나하나 담아주는 변수
             const uploadFile = uploadFiles[i]
             // <img> 태그안에 생성한 속성 data-src안에 들어 있는 파일이름 취득

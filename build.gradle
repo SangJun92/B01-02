@@ -62,6 +62,11 @@ dependencies {
 	// Thumbnailator : 썸네일 관련 라이브러리
 	implementation group: 'net.coobird', name: 'thumbnailator', version: '0.4.16'
 
+	// 스프링 시큐리티
+	implementation 'org.springframework.boot:spring-boot-starter-security:3.2.5'
+
+//	implementation 'org.thymeleaf.extras:thymeleaf-extras-springsecurity5'
+	implementation 'org.thymeleaf.extras:thymeleaf-extras-springsecurity6:3.1.2.RELEASE'
 
 }
 
