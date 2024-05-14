@@ -11,7 +11,7 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
-public class Member extends BaseEntity{
+public class Member2 extends BaseEntity{
   @Id
   @Column(length = 50 , nullable = false)
   private String member_id;

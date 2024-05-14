@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-import org.zerock.b01.dto.MemberDTO;
+import org.zerock.b01.dto.MemberDTO2;
 import org.zerock.b01.service.MemberService;
 
 @Controller
@@ -20,13 +20,13 @@ import org.zerock.b01.service.MemberService;
 public class MemberController2 {
   private final MemberService memberService;
   @GetMapping("/join")
-  public String join(MemberDTO memberDTO) {
+  public String join(MemberDTO2 memberDTO2) {
     return "/ex/join";
   }
   @PostMapping("/join")
-  public String addJoin(MemberDTO memberDTO) {
-    memberDTO.setEmail1(memberDTO.getMember_id());
-    memberService.register(memberDTO);
+  public String addJoin(MemberDTO2 memberDTO2) {
+    memberDTO2.setEmail1(memberDTO2.getMember_id());
+    memberService.register(memberDTO2);
     return "redirect:/ex/index";
   }
   @GetMapping("/login")
@@ -40,7 +40,7 @@ public class MemberController2 {
                       String member_pw,
                       RedirectAttributes redirectAttributes) {
     try{
-      MemberDTO loginInfo = memberService.login(member_id,member_pw);
+      MemberDTO2 loginInfo = memberService.login(member_id,member_pw);
       HttpSession session = req.getSession(true);
       session.setAttribute("loginInfo", loginInfo);
       model.addAttribute("info",loginInfo);
