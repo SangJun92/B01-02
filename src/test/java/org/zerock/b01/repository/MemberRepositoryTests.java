@@ -5,9 +5,11 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.test.annotation.Commit;
 import org.zerock.b01.domain.Member;
 import org.zerock.b01.domain.MemberRole;
 
+import java.util.Optional;
 import java.util.stream.IntStream;
 
 @SpringBootTest
@@ -42,5 +44,30 @@ public class MemberRepositoryTests {
             // 데이터베이스에 저장
             memberRepository.save(member);
         });
+    }
+    @Test
+    public void testRead() {
+        // 데이터베이스에서 mid를 기준으로 데이터를 취득
+        Optional<Member> result = memberRepository.getWithRoles("member100");
+
+        // 에러 확인
+        Member member = result.orElseThrow();
+
+        // 전체 데이터 출력
+        log.info(member);
+        // Role데이터 출력
+        log.info(member.getRoleSet());
+
+        member.getRoleSet().forEach(memberRole -> log.info(memberRole.name()));
+    }
+
+    @Commit
+    @Test
+    public void testUpdate() {
+
+        String mid = "cookie_00@naver.com"; // 소셜로그인으로 추가된 사용자로 현재 DB에 존재하는 이메일
+        String mpw = passwordEncoder.encode("54321");
+
+        memberRepository.updatePassword(mpw, mid);
     }
 }

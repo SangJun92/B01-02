@@ -12,12 +12,15 @@ import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.access.AccessDeniedHandler;
+import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.rememberme.JdbcTokenRepositoryImpl;
 import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
 import org.zerock.b01.security.CustomUserDetailsService;
 import org.zerock.b01.security.handler.Custom403Handler;
+import org.zerock.b01.security.handler.CustomSocialLoginSeuccessHandler;
 
 import javax.sql.DataSource;
 
@@ -29,6 +32,12 @@ public class CustomSecurityConfig {
 
     private final DataSource dataSource;
     private final CustomUserDetailsService userDetailsService;
+
+    @Bean
+    public AuthenticationSuccessHandler authenticationSuccessHandler() {
+        return new CustomSocialLoginSeuccessHandler(passwordEncoder());
+    }
+
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         log.info("-----------------configure----------------------------");
@@ -43,6 +52,11 @@ public class CustomSecurityConfig {
                 .tokenValiditySeconds(60*60*24*30);
 
         http.exceptionHandling().accessDeniedHandler(accessDeniedHandler()); // 403
+
+        http.oauth2Login()
+                .loginPage("/member/login")
+                .successHandler(authenticationSuccessHandler());
+
         return http.build();
     }
 
@@ -71,4 +85,6 @@ public class CustomSecurityConfig {
     public AccessDeniedHandler accessDeniedHandler() {
         return new Custom403Handler();
     }
+
+
 }

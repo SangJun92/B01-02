@@ -1,8 +1,12 @@
 package org.zerock.b01.service;
 
-import org.zerock.b01.dto.MemberDTO2;
+import org.zerock.b01.dto.MemberJoinDTO;
 
 public interface MemberService {
-  void register(MemberDTO2 memberDTO2);
-  MemberDTO2 login(String memberId, String memberPw);
+
+    static class MidExistException extends Exception {
+
+    }
+
+    void join(MemberJoinDTO memberJoinDTO) throws MidExistException;
 }
